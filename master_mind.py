@@ -1,3 +1,6 @@
+# Name: Armaan Hirani
+# UTEID: ah62954
+
 import random
 from tkinter import *
 from tkinter import ttk

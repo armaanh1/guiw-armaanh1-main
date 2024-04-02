@@ -1,8 +1,7 @@
-# Name:
-# UTEID:
-# replace <NAME> with your name and delete this line.
+# Name: Armaan Hirani
+# UTEID: ah62954
 #
-# On my honor, <NAME>, this programming assignment is my own work
+# On my honor, Armaan Hirani, this programming assignment is my own work
 # and I have not provided this code to any other student.
 #
 # Explain your addded feature here:
