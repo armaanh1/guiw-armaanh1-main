@@ -1,11 +1,19 @@
 # Name: Armaan Hirani
 # UTEID: ah62954
-
-# all adopted from master_mind.py, letter_typing.py, and assignmnet 1 code
+#
+# On my honor, Armaan Hirani, this programming assignment is my own work
+# and I have not provided this code to any other student.
+#
+# Explain your addded feature here:
+# I've added functionality for the user to delete the last letter
+# they typed in the current row. This is done by pressing the
+# backspace key. I've also added functionality for the user to enter a
+# guess by pressing the enter key. This is done by pressing the enter key.
 
 import random
 from tkinter import *
 from tkinter import ttk
+
 
 class Logic:
     def __init__(self):
@@ -54,10 +62,9 @@ class Logic:
         """
         Return a dictionary with the outputs based on win conditions.
         """
-        return {1:'You win. Genius!', 2:'You win. Magnificent!', 
-                3:'You win. Impressive!', 4:'You win. Splendid!', 
-                5:'You win. Great!', 6:'You win. Phew!'}
-
+        return {1: 'You win. Genius!', 2: 'You win. Magnificent!',
+                3: 'You win. Impressive!', 4: 'You win. Splendid!',
+                5: 'You win. Great!', 6: 'You win. Phew!'}
 
     def get_secret_word(self):
         """
@@ -91,7 +98,7 @@ class Logic:
                 return 'Not quite. The secret word was ' + self.__secret_word
         else:
             return 'Game Over. Please start a new game'
-    
+
     def output(self, guessed_word):
         """
         Handle the output for the guessed word.
@@ -110,7 +117,7 @@ class Logic:
 
 
 def main():
-     # Set the seed to make grading easier.
+    # Set the seed to make grading easier.
     # Final version turned in must have this line
     # of code. First three words with this seed
     # should be AFFIX, PROXY, APING
@@ -138,6 +145,7 @@ def main():
 
     root.mainloop()
 
+
 def update_letter(letter, labels, board):
     print(letter)
     if letter.isalpha() and not board.game_over and board.col < 5:
@@ -146,29 +154,33 @@ def update_letter(letter, labels, board):
         label.configure(text=letter)
         board.col += 1
 
+
 def delete_letter(labels, board):
     if board.col > 0:
         board.col -= 1
         labels[board.row][board.col].configure(text=' ')
 
+
 def new_game(labels, board, feedback_label):
+
     board.new_game()
     for row in labels:
         for label in row:
             label.configure(text=' ', bg='systemWindowBackgroundColor')
     feedback_label.config(text='')
 
+
 def make_guess(labels, board, feedback_label):
     feedback_label.config(text='')
     if board.col == 5:
-       
+
         compiledGuess = ''
         for i in range(len(labels[board.row])):
             compiledGuess += labels[board.row][i].cget('text')
-        
+
         if not board.is_valid(compiledGuess):
             feedback_label.config(text='I don\'t know that word.')
-        else: 
+        else:
             feedback = board.play_round(compiledGuess)
             if board.game_over:
                 feedback_label.config(text=feedback)
@@ -179,13 +191,12 @@ def make_guess(labels, board, feedback_label):
             else:
                 for i in range(len(feedback)):
                     let = feedback[i]
-                    if(let == 'G'):
+                    if (let == 'G'):
                         labels[board.row][i].configure(bg='green')
-                    elif(let == 'O'):
+                    elif (let == 'O'):
                         labels[board.row][i].configure(bg='orange')
                     else:
                         labels[board.row][i].configure(bg='grey')
-
 
                 board.row += 1
                 board.col = 0
@@ -193,15 +204,16 @@ def make_guess(labels, board, feedback_label):
     else:
         feedback_label.config(text='Must have 5 letters to make a guess.')
 
+
 def create_grid(root):
     """
     create the grid of labels for the guesses and feedback
     """
     label_frame = ttk.Frame(root, padding="3 3 3 3")
-    label_frame.grid(row=1, column=1, columnspan=3) 
-    root.grid_rowconfigure(1, weight=1) 
-    root.grid_columnconfigure(1, weight=1) 
-    
+    label_frame.grid(row=1, column=1, columnspan=3)
+    root.grid_rowconfigure(1, weight=1)
+    root.grid_columnconfigure(1, weight=1)
+
     labels = []
     for row in range(1, 7):
         label_row = []
@@ -211,7 +223,7 @@ def create_grid(root):
             label.grid(row=row, column=col, padx=2, pady=3)
             label_row.append(label)
         labels.append(label_row)
-    
+
     return labels
 
 
@@ -220,17 +232,27 @@ def create_control_buttons(root, labels, guess, board):
     bottom_frame.grid(row=2, column=1, columnspan=2)
     info_label = ttk.Label(bottom_frame, font='Arial 16 bold',)
     info_label.grid(row=3, column=1, columnspan=3)
-    new_game_button = Button(bottom_frame, font='Arial 24 bold',
-                         text='New Game',
-                         command=lambda: new_game(labels, board, info_label))
+    new_game_button = Button(
+        bottom_frame,
+        font='Arial 24 bold',
+        text='New Game',
+        command=lambda: new_game(
+            labels,
+            board,
+            info_label))
     new_game_button.grid(row=2, column=1, padx=2, pady=2)
     undo_button = Button(bottom_frame, font='Arial 24 bold',
                          text='Delete',
                          command=lambda: delete_letter(labels, board))
     undo_button.grid(row=2, column=2, padx=2, pady=2)
-    enter_guess_button = Button(bottom_frame, font='Arial 24 bold',
-            text='Check',
-            command=lambda: make_guess(labels, board, info_label))
+    enter_guess_button = Button(
+        bottom_frame,
+        font='Arial 24 bold',
+        text='Check',
+        command=lambda: make_guess(
+            labels,
+            board,
+            info_label))
     enter_guess_button.grid(row=2, column=3, padx=2, pady=2)
     return info_label
 
@@ -241,6 +263,7 @@ def undo_last_pick(labels, board, guess):
         column = len(guess) - 1
         labels[row][column].configure(bg='SystemButtonFace')
         guess.pop()
+
 
 if __name__ == '__main__':
     main()
